@@ -1,6 +1,7 @@
 body {
     margin: auto;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 4px;
 }
 table {
     width: 100%;
@@ -13,4 +14,23 @@ table, th, td {
 
 caption {
     color: darkviolet;
+}
+
+.box-kamar {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid slateblue;
+  padding: 8px;
+  display: block;
+  box-sizing: border-box;
+}
+
+.box-perkamar {
+  width: 20%;
+  border-radius: 8px;
+  border: 1px solid cyan;
+  padding: 8px;
+  background-color: white;
+  color: darkslategray;
+  box-sizing: border-box;
 }
