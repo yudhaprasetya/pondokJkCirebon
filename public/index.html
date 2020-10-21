@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pondok JK Cirebon</title>
     <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+    <script src="https://kit.fontawesome.com/71dab61d8f.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -98,10 +99,181 @@
 <div class="clearfix"></div>
 
   <div class="menu-bottom">
-    <button type="submit">New Guest</button>
-    <a href="page/">Casheer</a>
-  </div>
+    <button id="myBtn" type="button" name="button">New Guest</button>
+        <a href="page/">Casheer</a>
+        </div>
   
+      <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+
+        <form class="" id="formCash" action="" method="post">
+
+          <input style="text-transform:uppercase" type="text" name="nama" placeholder="Nama Tamu" value="">
+          <input placeholder="1271******* NIK KTP" type="text" inputmode="numeric" name="" id="" value="" />
+          <input placeholder="0852******* No. HP" type="text" inputmode="numeric" name="" id="" value="" />
+          
+          <input type="radio" name="tipe" id="standard" />
+          <label for="standard">Standard</label>
+          <input type="radio" name="tipe" id="vip" />
+          <label for="vip">VIP</label>
+          <input type="radio" name="tipe" id="vvip" />
+          <label for="vvip">VVIP</label>
+          
+          <br />
+          
+          <input type="checkbox" name="" id="extrabed" value="" />
+          <label for="extrabed">Extrabed</label>
+
+          <textarea style="text-transform:uppercase" placeholder="Keterangan . . . . . . . . " name="ket" rows="8" cols="80"></textarea>
+          
+          <div class="modal-button">
+          <button onclick="resetBut()" type="button" name="">Clear</button>
+          <button type="submit" name="save">Simpan</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+  
+  <script type="text/javascript" charset="utf-8">
+          // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyBB9PXibMpZHw2mjW_93t5PkNgnpU1q7Dc",
+            authDomain: "multifinance-id.firebaseapp.com",
+            databaseURL: "https://multifinance-id.firebaseio.com",
+            projectId: "multifinance-id",
+            storageBucket: "multifinance-id.appspot.com",
+            messagingSenderId: "119803735922",
+            appId: "1:119803735922:web:a707b913d5821deb80f7eb",
+            measurementId: "G-HVLLG8E5KV"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+  </script>
+  
+    <script type="text/javascript">
+    var inp1 = document.getElementById("debit");
+    inp1.oninput = function () {
+      document.getElementById("kredit").disabled = this.value != "";
+    };
+
+    var inp2 = document.getElementById("kredit");
+    inp2.oninput = function () {
+      document.getElementById("debit").disabled = this.value != "";
+    };
+  </script>
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    var debit = document.getElementById("debit");
+    debit.addEventListener("keyup", function(e) {
+      // tambahkan 'Rp.' pada saat form di ketik
+      // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+      debit.value = formatRupiah(this.value, "Rp. ");
+    });
+
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix) {
+      var number_string = angka.replace(/[^,\d]/g, "").toString(),
+      split = number_string.split(","),
+      sisa = split[0].length % 3,
+      debit = split[0].substr(0, sisa),
+      ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+      // tambahkan titik jika yang di input sudah menjadi angka ribuan
+      if (ribuan) {
+        separator = sisa ? "." : "";
+        debit += separator + ribuan.join(".");
+      }
+
+      debit = split[1] != undefined ? debit + "," + split[1] : debit;
+      return prefix == undefined ? debit : debit ? "Rp. " + debit : "";
+    }
+
+    var kredit = document.getElementById("kredit");
+    kredit.addEventListener("keyup", function(e) {
+      // tambahkan 'Rp.' pada saat form di ketik
+      // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+      kredit.value = formatRupiah(this.value, "Rp. ");
+    });
+
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix) {
+      var number_string = angka.replace(/[^,\d]/g, "").toString(),
+      split = number_string.split(","),
+      sisa = split[0].length % 3,
+      kredit = split[0].substr(0, sisa),
+      ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+      // tambahkan titik jika yang di input sudah menjadi angka ribuan
+      if (ribuan) {
+        separator = sisa ? "." : "";
+        kredit += separator + ribuan.join(".");
+      }
+
+      kredit = split[1] != undefined ? kredit + "," + split[1] : kredit;
+      return prefix == undefined ? kredit : kredit ? "Rp. " + kredit : "";
+    }
+
+  </script>
+
+  <script type="text/javascript">
+    function deb(debForm) {
+      var debit = debForm.debit.value;
+      var res_debit =  debit
+      debForm.Debit.value=res_debit.replace(/\D/g,'');
+
+    }
+
+    function kred(kredForm) {
+      var kredit = kredForm.kredit.value;
+      var res_kredit =  kredit
+      kredForm.Kredit.value=res_kredit.replace(/\D/g,'');
+    }
+  </script>
+
+  <script type="text/javascript">
+    function resetBut() {
+      document.getElementById("formCash").reset();
+    }
+  </script>
+
+
 </body>
 
 </html>

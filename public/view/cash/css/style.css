@@ -1,0 +1,26 @@
+body {
+  margin: auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+table {
+  width: 100%;
+}
+
+table, th, td {
+  border-collapse: collapse;
+  border: 1px solid darkgray;
+}
+
+.box-menu {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 8px;
+  text-align: center;
+  border-top: 1px solid darkgray;
+}
+
+* {
+  box-sizing: border-box;
+}

@@ -2,6 +2,7 @@ body {
     margin: auto;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
 table {
     width: 100%;
 }
@@ -91,7 +92,6 @@ div.desc {
   padding: 8px;
   background-color: white;
   color: darkslategray;
-  box-sizing: border-box;
 }
 
 .menu-bottom {
@@ -102,6 +102,65 @@ div.desc {
   text-align: center;
   border-top: 1px solid slateblue;
   border-bottom: 1px solid slateblue;
-  box-sizing: border-box;
   background-color: white;
+}
+
+.new-guest {
+  width: 100%;
+  padding: 8px;
+}
+
+div.modal-content input[type=text], textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: 1px solid darkgray;
+  border-radius: 4px;
+}
+
+div.modal-button {
+  border-top: 1px solid darkgray;
+  text-align: center;
+  padding: 8px;
+  
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 8px;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }
