@@ -1,0 +1,22 @@
+body {
+  margin: auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+table {
+  width: 100%;
+}
+
+table, th, td {
+  border: 1px solid darkgray;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 4px;
+}
+
+.box-table {
+  padding: 8px;
+  border-bottom: 1px solid darkgrey;
+}
