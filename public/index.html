@@ -6,11 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pondok JK Cirebon</title>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
   <script src="https://kit.fontawesome.com/71dab61d8f.js" crossorigin="anonymous"></script>
@@ -25,7 +24,7 @@
 
   <div class="menu-bottom">
     <a style="float: left;" href="/"><i class="fas fa-hotel"></i></a>
-    <button id="myBtn" type="button" name="button">New Guest</button>
+    <button id="myBtn" type="button" data-toggle="modal" data-target="#ModalAdd">New Guest</button>
     <a href="page/">Casheer</a>
     <a style="float: right;" href="view/admin/"><i class="fas fa-tools"></i></a>
   </div>
@@ -130,81 +129,81 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-    
-            // Mengambil id terakhir dan membahkan dengan 1 dan memasukkan kedalam text id di modal tambah
-        function ambilDataTerakhir() {
 
-            $('#t4_nama_tamu_add').val("");
-            $('#t4_nik_ktp_add').val("");
-            $('#t4_no_hp_add').val("");
-            $('#t4_tipe_kamar_add').val("");
-            $('#t4_extrabed_add').val("");
-            $('#t4_ket_add').val("");
+    // Mengambil id terakhir dan membahkan dengan 1 dan memasukkan kedalam text id di modal tambah
+    function ambilDataTerakhir() {
 
-            var dbRef_ambilDataTerakhir = firebase.database();
-            var cariAkhir = dbRef_ambilDataTerakhir.ref("daftar-tamu");
-            cariAkhir.limitToLast(1).on('child_added', function (dataAkhir) {
-                var snap = dataAkhir.val();
-                var id_record_terakhir = snap.id + 1;
-                document.getElementById("T4_add").value = id_record_terakhir;
-            });
+      $('#t4_nama_tamu_add').val("");
+      $('#t4_nik_ktp_add').val("");
+      $('#t4_no_hp_add').val("");
+      $('#t4_tipe_kamar_add').val("");
+      $('#t4_extrabed_add').val("");
+      $('#t4_ket_add').val("");
 
-        }
-    
-            // Melakukan proses penambahan data
-        function addGuest_Proses() {
-            var id_add_proses = $('#T4_add').val();
-            var nama_tamu_add_proses = $('#t4_nama_tamu_add').val();
-            var nik_ktp_add_proses = $('#t4_nik_ktp_add').val();
-            var no_hp_add_proses = $('#t4_no_hp_add').val();
-            var tipe_kamar_add_proses = $('#t4_tipe_kamar_add').val();
-            var extrabed_add_proses = $('#t4_extrabed_add').val();
-            var ket_add_proses = $('#t4_ket_add').val();
+      var dbRef_ambilDataTerakhir = firebase.database();
+      var cariAkhir = dbRef_ambilDataTerakhir.ref("daftar-tamu");
+      cariAkhir.limitToLast(1).on('child_added', function (dataAkhir) {
+        var snap = dataAkhir.val();
+        var id_record_terakhir = snap.id + 1;
+        document.getElementById("T4_add").value = id_record_terakhir;
+      });
 
-            var dbRef_add_proses = firebase.database();
+    }
 
-            // Isikan data kedalam firebase
-            var daftarTamu = dbRef_add_proses.ref("daftar-tamu/" + id_add_proses);
+    // Melakukan proses penambahan data
+    function addGuest_Proses() {
+      var id_add_proses = $('#T4_add').val();
+      var nama_tamu_add_proses = $('#t4_nama_tamu_add').val();
+      var nik_ktp_add_proses = $('#t4_nik_ktp_add').val();
+      var no_hp_add_proses = $('#t4_no_hp_add').val();
+      var tipe_kamar_add_proses = $('#t4_tipe_kamar_add').val();
+      var extrabed_add_proses = $('#t4_extrabed_add').val();
+      var ket_add_proses = $('#t4_ket_add').val();
 
-            daftarTamu.set({
+      var dbRef_add_proses = firebase.database();
 
-                id: parseInt(id_add_proses),
-                nama_tamu: nama_tamu_add_proses,
-                nik_ktp: nik_ktp_add_proses,
-                no_hp: no_hp_add_proses,
-                tipe_kamar: tipe_kamar_add_proses,
-                extrabed: extrabed_add_proses,
-                ket: ket_add_proses
+      // Isikan data kedalam firebase
+      var daftarTamu = dbRef_add_proses.ref("daftar-tamu/" + id_add_proses);
 
-            });
+      daftarTamu.set({
 
-            $('#ModalAdd').modal('hide');
-            tampilData();
-        }
+        id: parseInt(id_add_proses),
+        nama_tamu: nama_tamu_add_proses,
+        nik_ktp: nik_ktp_add_proses,
+        no_hp: no_hp_add_proses,
+        tipe_kamar: tipe_kamar_add_proses,
+        extrabed: extrabed_add_proses,
+        ket: ket_add_proses
+
+      });
+
+      $('#ModalAdd').modal('hide');
+      tampilData();
+    }
 
   </script>
-  
-    <!-- The Modal -->
-  <div id="myModal" class="modal">
+
+  <!-- The Modal -->
+  <div id="ModalAdd" class="modal">
 
     <!-- Modal content -->
     <div class="modal-content">
       <span class="close">&times;</span>
-        <input placeholder="ID" type="text" id="T4_add" />
-        <input style="text-transform:uppercase" type="text" placeholder="Nama Tamu" id="t4_nama_tamu_add" />
-        <input placeholder="1271******* NIK KTP" type="text" inputmode="numeric" id="t4_nik_ktp_add" />
-        <input placeholder="0852******* No. HP" type="text" inputmode="numeric" id="t4_no_hp_add" />
+      <input placeholder="ID" type="text" id="T4_add" />
+      <input style="text-transform:uppercase" type="text" placeholder="Nama Tamu" id="t4_nama_tamu_add" />
+      <input placeholder="1271******* NIK KTP" type="text" inputmode="numeric" id="t4_nik_ktp_add" />
+      <input placeholder="0852******* No. HP" type="text" inputmode="numeric" id="t4_no_hp_add" />
 
-        <input placeholder="Standard VVIP Suite room<ul></ul>" type="text" id="t4_tipe_kamar_add" />
-        <input placeholder="Extrabed" type="text" id="t4_extrabed_add" />
+      <input placeholder="Standard VVIP Suite room<ul></ul>" type="text" id="t4_tipe_kamar_add" />
+      <input placeholder="Extrabed" type="text" id="t4_extrabed_add" />
 
-        <textarea style="text-transform:uppercase" placeholder="Keterangan . . . . . . . . " id="t4_ket_add" rows="8"
-          cols="80"></textarea>
+      <textarea style="text-transform:uppercase" placeholder="Keterangan . . . . . . . . " id="t4_ket_add" rows="8"
+        cols="80"></textarea>
 
-        <div class="modal-button">
-          <button onclick="resetBut()" type="button">Clear</button>
-          <button type="button" onclick="addGuest_Proses()">Simpan</button>
-        </div>
+      <div class="modal-button">
+        <button onclick="resetBut()" type="button">Clear</button>
+        <button type="button" onclick="addGuest_Proses()">Simpan</button>
+      </div>
 
     </div>
   </div>
@@ -223,7 +222,7 @@
 
   <script>
     // Get the modal
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("ModalAdd");
 
     // Get the button that opens the modal
     var btn = document.getElementById("myBtn");
