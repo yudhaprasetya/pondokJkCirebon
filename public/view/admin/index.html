@@ -5,31 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pondok JK Cirebon - Admin Mode</title>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase.js"></script>
+
     <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
     <script src="https://kit.fontawesome.com/71dab61d8f.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body onload="tampilData">
+  
+  <div class="menu-bottom">
+    <button id="myBtn" type="button">New Room</button>
+  </div>
   
   <div class="box-table">
   
-  <table border="0">
+  <table id="tabel-room-list">
     <caption>Room List</caption>
     <thead>
       <tr>
-        <th>No.</th>
-        <th>ID</th>
-        <th>Room</th>
-        <th>Tipe</th>
-        <th>Created by</th>
-        <th>Date Create</th>
+        <th scope="col">No.</th>
+        <th scope="col">ID</th>
+        <th scope="col">Room</th>
+        <th scope="col">Tipe</th>
+        <th scope="col">Created by</th>
+        <th scope="col">Date Create</th>
       </tr>
     </thead>
     
     <tbody>
-      <tr>
-        
-      </tr>
+      
     </tbody>
     
   </table>
@@ -38,7 +43,7 @@
   
   <div class="box-table">
   
-  <table border="0">
+  <table>
     <caption>-</caption>
     <thead>
       <tr>
@@ -49,7 +54,274 @@
   </table>
   
   </div>
+  
+      <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyBB9PXibMpZHw2mjW_93t5PkNgnpU1q7Dc",
+            authDomain: "multifinance-id.firebaseapp.com",
+            databaseURL: "https://multifinance-id.firebaseio.com",
+            projectId: "multifinance-id",
+            storageBucket: "multifinance-id.appspot.com",
+            messagingSenderId: "119803735922",
+            appId: "1:119803735922:web:a707b913d5821deb80f7eb",
+            measurementId: "G-HVLLG8E5KV"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
 
+        // Menampilkan data dalam bentuk tabel
+        function tampilData() {
+
+            // Buat referensi database firebase
+            var dbRef = firebase.database();
+            var roomList = dbRef.ref("room-list");
+
+            // Dapatkan referensi table
+            var table = document.getElementById("tabel-room-list").getElementsByTagName('tbody')[0];
+
+            // Membuang semua isi table	
+            $("#tabel-room-list").find("tr:gt(0)").remove();
+
+            // Memuat Data
+            roomList.on("child_added", function (data, prevChildKey) {
+                var newroomList = data.val();
+
+                var row = table.insertRow(table.rows.length);
+
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
+
+                cell1.innerHTML = newroomList.id;
+                cell2.innerHTML = newroomList.room;
+                cell3.innerHTML = newroomList.tipe;
+                cell4.innerHTML = newroomList.created_by;
+                cell5.innerHTML = newroomList.date_create;
+                cell6.innerHTML = '<button class="" type="button" id="update_data" onclick="updateData_Tampil(' + newroomList.id + ')" data-toggle="modal" data-target="#ModalUpdate">Update</button><button class="" type="button" id="delete_data" onclick="deleteData_Tampil(' + newroomList.id + ')" data-toggle="modal" data-target="#ModalDel" style="margin-left:10px;">Hapus</button>';
+            });
+
+        }
+
+        // Melakukan proses pencarian data
+        function CariData() {
+            // Ambil isi text pencarian
+            var nama_room_cari = $('#text_cari').val();
+
+            // Buat referensi database firebase
+            var dbRef = firebase.database();
+            var roomList = dbRef.ref("room-list");
+
+
+            // Ambil data nama_alat sama persis isi text cari
+            // var query = statusAlat
+            // 				.orderByChild('nama_alat')
+            // 				.equalTo(nama_alat_cari)
+            // 				.limitToFirst(1);
+
+
+            // Ambil data nama_alat huruf depan (dan selebihnya) isi text cari dilimit 1 data saja
+            // var query = statusAlat
+            // 				.orderByChild('nama_alat')
+            // 				.startAt(nama_alat_cari)
+            // 				.endAt(nama_alat_cari + "\uf8ff")
+            // 				.limitToFirst(1);
+
+
+            // Ambil data nama_alat huruf depan (dan selebihnya) isi text cari
+            var query = roomList
+                .orderByChild('room-list')
+                .startAt(nama_room_cari)
+                .endAt(nama_room_cari + "\uf8ff");
+
+
+            // Dapatkan referensi table
+            var table = document.getElementById("tabel-room-list").getElementsByTagName('tbody')[0];
+
+            // Membuang semua isi table	
+            $("#tabel-room-list").find("tr:gt(0)").remove();
+
+            // Memuat Data pencarian
+
+            query.on("child_added", function (snapshot) {
+
+                var childData = snapshot.val();
+                console.log(childData);
+
+                var row = table.insertRow(table.rows.length);
+
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
+
+                cell1.innerHTML = childData.id;
+                cell2.innerHTML = childData.room;
+                cell3.innerHTML = childData.tipe;
+                cell4.innerHTML = childData.created_by;
+                cell5.innerHTML = childData.date_create;
+                cell6.innerHTML = '<button class="" type="button" id="update_data" onclick="updateData_Tampil(' + childData.id + ')" data-toggle="modal" data-target="#ModalUpdate">Update</button><button class="" type="button" id="delete_data" onclick="deleteData_Tampil(' + childData.id + ')" style="margin-left:10px;"data-toggle="modal" data-target="#ModalDel">Hapus</button>';
+            });
+
+        }
+
+        // Menampilkan data yang akan di update kedalam modal update
+        function updateData_Tampil(id) {
+            $('#T4').val(id);
+
+            var dbRef_update_tampil = firebase.database();
+            var roomListdenganID = dbRef_update_tampil.ref("room-list/" + id);
+
+            roomListdenganID.on("value", function (snapshot) {
+                var childData = snapshot.val();
+                $('#t4_room').val(childData.room);
+                $('#t4_tipe').val(childData.tipe);
+                $('#t4_created_by').val(childData.created_by);
+                $('#t4_date_create').val(childData.date_create);
+            });
+
+        }
+
+        // Melakukan proses update data
+        function updateData_Proses() {
+            var id_update_proses = $('#T4').val();
+            var room_update_proses = $('#t4_room').val();
+            var tipe_update_proses = $('#t4_tipe').val();
+            var created_by_update_proses = $('#t4_created_by').val();
+            var date_create_update_proses = $('#t4_date_create').val();
+
+            var dbRef_update_proses = firebase.database();
+            var update_roomList = dbRef_update_proses.ref("room-list/" + id_update_proses);
+
+            update_roomList.update({
+                "room": room_update_proses,
+                "tipe": tipe_update_proses,
+                "created_by": created_by_update_proses,
+                "date_create": date_create_update_proses
+            });
+
+            $('#myModal').modal('hide');
+            tampilData();
+        }
+
+        // Mengambil id terakhir dan membahkan dengan 1 dan memasukkan kedalam text id di modal tambah
+        function ambilDataTerakhir() {
+
+            $('#t4_room_add').val("");
+            $('#t4_tipe_add').val("");
+            $('#t4_created_by_add').val("");
+            $('#t4_date_create_add').val("");
+
+            var dbRef_ambilDataTerakhir = firebase.database();
+            var cariAkhir = dbRef_ambilDataTerakhir.ref("room-list");
+            cariAkhir.limitToLast(1).on('child_added', function (dataAkhir) {
+                var snap = dataAkhir.val();
+                var id_record_terakhir = snap.id + 1;
+                document.getElementById("T4_add").value = id_record_terakhir;
+            });
+
+        }
+
+        // Melakukan proses penambahan data
+        function addData_Proses() {
+            var id_add_proses = $('#T4_add').val();
+            var room_add_proses = $('#t4_room_add').val();
+            var tipe_add_proses = $('#t4_tipe_add').val();
+            var created_by_add_proses = $('#t4_created_by_add').val();
+            var date_create_add_proses = $('#t4_date_create_add').val();
+
+            var dbRef_add_proses = firebase.database();
+
+            // Isikan data kedalam firebase
+            var roomList = dbRef_add_proses.ref("room-list/" + id_add_proses);
+
+            roomList.set({
+
+                id: parseInt(id_add_proses),
+                room: room_add_proses,
+                tipe: tipe_add_proses,
+                created_by: created_by_add_proses,
+                date_create: date_create_add_proses
+
+            });
+
+            $('#myModal').modal('hide');
+            tampilData();
+        }
+
+        // Melakukan proses delete data yang telah dikonfirmasi sebelumnya
+        function delData_Proses() {
+            var id_add_proses = $('#T4_del').val();
+
+            var dbRef_delete = firebase.database();
+            var roomList = dbRef_delete.ref("room-list/" + id_add_proses);
+            roomList.remove();
+            $('#ModalDel').modal('hide');
+            tampilData();
+
+
+        }
+
+        // Memasukkan id ke textbox di modal konfirmasi delete
+        function deleteData_Tampil(id) {
+            $('#T4_del').val(id);
+        }
+    </script>
+    
+      <!-- The Modal -->
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      
+        <input class="form-control" placeholder="ID" type="text" inputmode="numeric" id="T4_add" />
+        <input class="form-control" placeholder="Room Number" type="text" inputmode="numeric" id="t4_room_add" />
+        <input class="form-control" placeholder="Tipe Kamar" type="text" id="t4_tipe_add" />
+        <input class="form-control" placeholder="Dibuat Oleh" type="text" id="t4_created_by_add" />
+        <input class="form-control" placeholder="Tanggal Dibuat" type="text" id="t4_date_create_add" />
+
+        <div class="modal-button">
+          <button onclick="resetBut()" type="button" name="">Clear</button>
+          <button type="button" onclick="addData_Proses()">Simpan</button>
+        </div>
+
+    </div>
+  </div>
+  
+  <script type="text/javascript" charset="utf-8">
+        var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
 </body>
 
 </html>
